@@ -9,6 +9,8 @@ import re
 from datetime import datetime, timedelta
 import os
 import requests
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3" 
@@ -23,16 +25,16 @@ def create_driver():
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
+        service = Service(ChromeDriverManager().install(), log_path=os.devnull)
 
     else:
         # running locally
         options.add_argument("--start-maximized")
         options.add_experimental_option("detach", True)
+        options.add_argument("--log-level=3")
+        service = Service(log_path=os.devnull)
 
-    options.add_argument("--log-level=3")
-    service = Service(log_path=os.devnull)
-
-    return webdriver.Chrome(service=service, options=options)
+    return webdriver.Chrome(options=options, service=service)
 
 
 def click_button(driver, xpath):
