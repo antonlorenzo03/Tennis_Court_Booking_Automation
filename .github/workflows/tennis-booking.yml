@@ -43,6 +43,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install Google Chrome
+        run: |
+          sudo apt update
+          sudo apt install -y wget unzip jq libxi6 libgconf-2-4 libnss3 libxss1 libappindicator1 libindicator7 xvfb
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt --fix-broken install -y
+
       - name: Run script (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
         env:
