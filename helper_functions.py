@@ -10,35 +10,29 @@ from datetime import datetime, timedelta
 import os
 import requests
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 
-CHROMEDRIVER_PATH = None
-
-if os.getenv("GITHUB_ACTIONS") == "true":
-    from webdriver_manager.chrome import ChromeDriverManager
-    CHROMEDRIVER_PATH = ChromeDriverManager().install()
 
 
 def create_driver():
     options = webdriver.ChromeOptions()
 
-    if os.getenv("GITHUB_ACTIONS") == "true":
-        # if running automated
-        options.add_argument("--headless")
+    is_headless = os.getenv("GITHUB_ACTIONS") == "true" or os.getenv("DOCKER") == "true"
+
+    if is_headless:
+        options.add_argument("--headless=new")  
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
-        service = Service(CHROMEDRIVER_PATH, log_path=os.devnull)
+        service = Service("/usr/bin/chromedriver", log_output=os.devnull)
 
     else:
-        # running locally
         options.add_argument("--start-maximized")
-        options.add_experimental_option("detach", True)
         options.add_argument("--log-level=3")
-        service = Service(log_path=os.devnull)
+        options.add_experimental_option("detach", True)
+        service = Service(log_output=os.devnull)
 
-    return webdriver.Chrome(options=options, service=service)
+    return webdriver.Chrome(service=service, options=options)
 
 
 def click_button(driver, xpath):

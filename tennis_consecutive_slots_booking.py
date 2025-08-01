@@ -78,42 +78,42 @@ def main(results_dict, label, target_day, court_priority, preferred_time, max_re
             input_value(driver, '//input[@class="bookly-js-custom-field"]', os.getenv("CCODE"))
 
             # Submit
-            # click_button(driver,'//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
-            # handle_popup(driver)
+            click_button(driver,'//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
+            handle_popup(driver)
 
-            results_dict[label] = {
-                "status": "Success",
-                "court": court
-            }
-            if close_browser:
-                driver.quit()
-            return True
+            # results_dict[label] = {
+            #     "status": "Success",
+            #     "court": court
+            # }
+            # if close_browser:
+            #     driver.quit()
+            # return True
 
-            # try:
-            #     WebDriverWait(driver, 10).until_not(
-            #     EC.presence_of_element_located((By.XPATH, '//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]'))
-            #     )
+            try:
+                WebDriverWait(driver, 10).until_not(
+                EC.presence_of_element_located((By.XPATH, '//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]'))
+                )
                 
-            #     WebDriverWait(driver, 5).until(
-            #     EC.any_of(
-            #     EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "Thank you!")]')),
-            #     EC.presence_of_element_located((By.XPATH, '//button[.//span[contains(text(), "Start over")]]')),
-            #     EC.presence_of_element_located((By.XPATH,'//button[@class="bookly-nav-btn bookly-js-start-over bookly-btn ladda-button bookly-left"]'))
-            #     )
-            #     )
+                WebDriverWait(driver, 5).until(
+                EC.any_of(
+                EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "Thank you!")]')),
+                EC.presence_of_element_located((By.XPATH, '//button[.//span[contains(text(), "Start over")]]')),
+                EC.presence_of_element_located((By.XPATH,'//button[@class="bookly-nav-btn bookly-js-start-over bookly-btn ladda-button bookly-left"]'))
+                )
+                )
 
-            #     results_dict[label] = {
-            #         "status": "Success",
-            #         "court": court
-            #     }
-            #     if close_browser:
-            #         driver.quit()
-            #     return True
+                results_dict[label] = {
+                    "status": "Success",
+                    "court": court
+                }
+                if close_browser:
+                    driver.quit()
+                return True
 
-            # except (TimeoutException, NoSuchElementException):
-            #     print("Reservation likely failed, retrying...")
-            #     retry += 1
-            #     continue
+            except (TimeoutException, NoSuchElementException):
+                print("Reservation likely failed, retrying...")
+                retry += 1
+                continue
 
         except (TimeoutException, StaleElementReferenceException, NoSuchElementException, UnexpectedAlertPresentException, ElementClickInterceptedException):
             print(f"Retry {retry + 1}/{max_retries} failed — refreshing page...")
