@@ -12,8 +12,12 @@ import requests
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
+CHROMEDRIVER_PATH = None
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3" 
+if os.getenv("GITHUB_ACTIONS") == "true":
+    from webdriver_manager.chrome import ChromeDriverManager
+    CHROMEDRIVER_PATH = ChromeDriverManager().install()
+
 
 def create_driver():
     options = webdriver.ChromeOptions()
@@ -25,7 +29,7 @@ def create_driver():
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
-        service = Service(ChromeDriverManager().install(), log_path=os.devnull)
+        service = Service(CHROMEDRIVER_PATH, log_path=os.devnull)
 
     else:
         # running locally
