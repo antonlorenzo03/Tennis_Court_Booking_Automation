@@ -11,7 +11,6 @@ from multiprocessing import Process, Manager
 import os
 
 
-# value = 4 for court c and 5 for court d
 def main(results_dict, label, target_day, court_priority, preferred_time, max_retries=30):
     retry = 0
     driver = create_driver()
