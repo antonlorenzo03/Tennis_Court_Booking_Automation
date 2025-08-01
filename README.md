@@ -3,9 +3,18 @@ Timeslots for the tennis court I play at are reserved through an online booking 
 
 There are two versions of this project:
 
-1. Single-Slot Booking:
+1. **Single-Slot Booking**:
 This version books the first available timeslot found in my predefined list of preferred time slots. It also prioritizes my favorite court. If no preferred timeslots are available, it searches for the same time priorities in my second-choice court.
-2. Consecutive 2-Hour Booking:
+2. **Consecutive 2-Hour Booking**:
 This version uses Python’s multiprocessing to book two consecutive hours simultaneously. It prioritizes booking both timeslots on the same court and if one of the bookings fails, attempts to secure the failed timeslot in another court.
 
 I used Docker to avoid unexpected issues during deployment when running directly in GitHub Actions. This made local testing easier, improved reproducibility, and significantly reduced execution time in GitHub Actions by avoiding repeated installation of Chrome and dependencies. All sensitive information was stored securely using GitHub Repository Secrets. The script is scheduled to automatically run at 8:01 AM on booking days (depending on my target play day). After a successful reservation, the system sends me a confirmation message via a Telegram bot.
+
+## Tools
+- Python
+  - Selenium (web automation)
+  - Regex ()
+  - Multiprocessing (parallel execution)
+  - Telegram Bot API (notifications)
+- Docker (containerized environment with Chrome and Chromedriver)
+- Github Actions (CI/CD workflow for scheduled and manual execution)
