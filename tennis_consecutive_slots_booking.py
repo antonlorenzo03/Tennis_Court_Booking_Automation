@@ -81,14 +81,6 @@ def main(results_dict, label, target_day, court_priority, preferred_time, max_re
             click_button(driver,'//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
             handle_popup(driver)
 
-            # results_dict[label] = {
-            #     "status": "Success",
-            #     "court": court
-            # }
-            # if close_browser:
-            #     driver.quit()
-            # return True
-
             try:
                 WebDriverWait(driver, 10).until_not(
                 EC.presence_of_element_located((By.XPATH, '//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]'))
