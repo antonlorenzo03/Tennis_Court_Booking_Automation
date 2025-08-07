@@ -2,7 +2,7 @@ name: Tennis Court Booking
 
 on:
   schedule:
-    - cron: '59 23 * * 4'  # Every Friday 07:59 AM PH time (Thursday 11:59 PM UTC) test comment
+    - cron: '58 23 * * 4'  # Every Friday 07:59 AM PH time (Thursday 11:59 PM UTC) test comment
   workflow_dispatch:
     inputs:
       target_day:
