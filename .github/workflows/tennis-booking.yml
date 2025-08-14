@@ -1,8 +1,6 @@
 name: Tennis Court Booking
 
 on:
-  schedule:
-    - cron: '58 23 * * 4'  # Every Friday 07:59 AM PH time (Thursday 11:59 PM UTC) test comment
   workflow_dispatch:
     inputs:
       target_day:
@@ -46,14 +44,3 @@ jobs:
             -e TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}" \
             anton665/tennis-bot:latest
 
-      - name: Run booking script from Docker image (scheduled)
-        if: github.event_name == 'schedule'
-        run: |
-          docker run --rm \
-            -e FULL_NAME="${{ secrets.FULL_NAME }}" \
-            -e EMAIL="${{ secrets.EMAIL }}" \
-            -e PHONE_NUMBER="${{ secrets.PHONE_NUMBER }}" \
-            -e CCODE="${{ secrets.CCODE }}" \
-            -e TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}" \
-            -e TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            anton665/tennis-bot:latest
