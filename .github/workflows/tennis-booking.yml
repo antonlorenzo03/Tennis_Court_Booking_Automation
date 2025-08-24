@@ -1,8 +1,6 @@
 name: Tennis Court Booking
 
 on:
-  schedule:
-    - cron: '59 23 * * 4'  # Every Friday 07:59 AM PH time (Thursday 11:59 PM UTC)
   workflow_dispatch:
     inputs:
       target_day:
@@ -12,10 +10,6 @@ on:
       time_slot1:
         description: 'Time Slot 1'
         default: '14:00:00'
-        required: true
-      time_slot2:
-        description: 'Time Slot 2'
-        default: '15:00:00'
         required: true
       courts:
         description: 'Courts (comma-separated)'
@@ -28,7 +22,7 @@ jobs:
 
     steps:
       - name: Pull Docker image from Docker Hub
-        run: docker pull anton665/tennis-bot:latest
+        run: docker pull anton665/tennis-bot:single
 
       - name: Run booking script from Docker image (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
@@ -36,7 +30,6 @@ jobs:
           docker run --rm \
             -e TARGET_DAY="${{ github.event.inputs.target_day }}" \
             -e TIME_SLOT1="${{ github.event.inputs.time_slot1 }}" \
-            -e TIME_SLOT2="${{ github.event.inputs.time_slot2 }}" \
             -e COURTS="${{ github.event.inputs.courts }}" \
             -e FULL_NAME="${{ secrets.FULL_NAME }}" \
             -e EMAIL="${{ secrets.EMAIL }}" \
@@ -44,16 +37,4 @@ jobs:
             -e CCODE="${{ secrets.CCODE }}" \
             -e TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}" \
             -e TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            anton665/tennis-bot:latest
-
-      - name: Run booking script from Docker image (scheduled)
-        if: github.event_name == 'schedule'
-        run: |
-          docker run --rm \
-            -e FULL_NAME="${{ secrets.FULL_NAME }}" \
-            -e EMAIL="${{ secrets.EMAIL }}" \
-            -e PHONE_NUMBER="${{ secrets.PHONE_NUMBER }}" \
-            -e CCODE="${{ secrets.CCODE }}" \
-            -e TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}" \
-            -e TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            anton665/tennis-bot:latest
+            anton665/tennis-bot:single
