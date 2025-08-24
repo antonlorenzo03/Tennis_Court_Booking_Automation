@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
 import re
 from datetime import datetime, timedelta
+import time
 import os
 import requests
 from selenium.webdriver.chrome.options import Options
@@ -16,20 +17,26 @@ from selenium.webdriver.chrome.options import Options
 def create_driver():
     options = webdriver.ChromeOptions()
 
-    is_headless = os.getenv("GITHUB_ACTIONS") == "true" or os.getenv("DOCKER") == "true"
+     # Headless + stability
+    options.add_argument("--headless=new")  
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=1920,1080")
 
-    if is_headless:
-        options.add_argument("--headless=new")  
-        options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--window-size=1920,1080")
+    # Suppress ChromeDriver logging
+    options.add_argument("--log-level=3") 
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    options.add_experimental_option("useAutomationExtension", False)
+
+    # Makes headless look less "bot-like"
+    options.add_argument("--disable-blink-features=AutomationControlled")
+
+    in_ci = os.getenv("GITHUB_ACTIONS") == "true" or os.getenv("DOCKER") == "true"
+
+    if in_ci:
         service = Service("/usr/bin/chromedriver", log_output=os.devnull)
-
     else:
-        options.add_argument("--start-maximized")
-        options.add_argument("--log-level=3")
-        options.add_experimental_option("detach", True)
         service = Service(log_output=os.devnull)
 
     return webdriver.Chrome(service=service, options=options)
@@ -120,6 +127,16 @@ def send_telegram_message(message):
         response = requests.post(url, json=payload, timeout=5)
         response.raise_for_status() 
     except requests.exceptions.RequestException as e:
-        print(f"[!] Failed to send Telegram message: {e}")
+        print(f"Failed to send Telegram message: {e}")
 
 
+def wait_until_target():
+    booking_time = "08:01:02"
+    now = datetime.now()
+    booking_time = datetime.strptime(booking_time, "%H:%M:%S").replace(
+        year=now.year, month=now.month, day=now.day
+    )
+
+    seconds_waiting = (booking_time - now).total_seconds()
+    if seconds_waiting > 0:
+        time.sleep(seconds_waiting)
