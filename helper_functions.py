@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
 import re
 from datetime import datetime, timedelta
+import time
 import os
 import requests
 from selenium.webdriver.chrome.options import Options
@@ -120,6 +121,16 @@ def send_telegram_message(message):
         response = requests.post(url, json=payload, timeout=5)
         response.raise_for_status() 
     except requests.exceptions.RequestException as e:
-        print(f"[!] Failed to send Telegram message: {e}")
+        print(f"Failed to send Telegram message: {e}")
 
 
+def wait_until_target():
+    booking_time = "08:01:02"
+    now = datetime.now()
+    booking_time = datetime.strptime(booking_time, "%H:%M:%S").replace(
+        year=now.year, month=now.month, day=now.day
+    )
+
+    seconds_waiting = (booking_time - now).total_seconds()
+    if seconds_waiting > 0:
+        time.sleep(seconds_waiting)
