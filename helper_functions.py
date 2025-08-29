@@ -43,14 +43,14 @@ def create_driver():
 
 
 def click_button(driver, xpath):
-    wait = WebDriverWait(driver, 3)
+    wait = WebDriverWait(driver, 8)
     button = wait.until(
         EC.element_to_be_clickable((By.XPATH, xpath))
     )
     button.click()
 
 def select_dropdown(driver, id,value):
-    wait = WebDriverWait(driver, 3)
+    wait = WebDriverWait(driver, 6)
     select_element = wait.until(
         EC.presence_of_element_located((By.XPATH, id))
     )
@@ -58,14 +58,14 @@ def select_dropdown(driver, id,value):
     dropdown.select_by_value(value)
 
 def input_value(driver, xpath, value):
-    wait = WebDriverWait(driver, 3)
+    wait = WebDriverWait(driver, 4)
     input_element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
     input_element.clear()
     input_element.send_keys(value)
 
 def handle_popup(driver):
     try:
-        wait = WebDriverWait(driver, 2)
+        wait = WebDriverWait(driver, 4)
         button = wait.until(
         EC.element_to_be_clickable((By.XPATH, '//button[@class="bookly-btn-submit"]'))
         )

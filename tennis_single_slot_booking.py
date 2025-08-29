@@ -51,7 +51,7 @@ def main(target_day, court_priority, preferred_time, max_retries=30):
 
 
             try:
-                wait = WebDriverWait(driver, 3)
+                wait = WebDriverWait(driver, 5)
 
                 # wait until "no timeslots available label" dissapears
                 wait.until_not(
@@ -126,6 +126,8 @@ def main(target_day, court_priority, preferred_time, max_retries=30):
             click_button(driver,'//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
             handle_popup(driver)
 
+            # Pay on-site page
+            click_button(driver, '//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
 
             print("Validating form submission...")
 
