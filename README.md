@@ -8,13 +8,13 @@ This version books the first available timeslot found in my predefined list of p
 2. **Consecutive 2-Hour Booking**:
 This version uses Python’s multiprocessing to book two consecutive hours simultaneously. It prioritizes booking both timeslots on the same court and if one of the bookings fails, attempts to secure the failed timeslot in another court.
 
-I used Docker to avoid unexpected issues during deployment when running directly in GitHub Actions. This made local testing easier, improved reproducibility, and significantly reduced execution time in GitHub Actions by avoiding repeated installation of Chrome and dependencies. All sensitive information was stored securely using GitHub Repository Secrets. The script is scheduled to automatically run at 7:59 am on booking days (depending on my target play day). I schedeuled the workflow to start earlier to account for the time it takes to pull the Docker image before execution. After a successful reservation, the system sends me a confirmation message via a Telegram bot.
+I used Docker to avoid unexpected issues during deployment when running directly in GitHub Actions. This made local testing easier, improved reproducibility, and significantly reduced execution time by avoiding repeated installation of Chrome and dependencies. All sensitive information was stored securely using GitHub Repository Secrets. The script is scheduled to automatically run at 7:58 am on booking days (depending on my target play day). I scheduled the workflow to start earlier to account for the time it takes to pull the Docker image before execution. Instead of relying solely on Github Actions’ scheduled workflow, which often experienced delays in execution, I used a cron job to trigger the workflow in Github Actions on schedule. After a successful reservation, the system sends me a confirmation message via a Telegram bot.
+
+Detailed documentation on the automation process can be viewed in my portfolio website [(Tennis Court Booking Automation)](https://lac-b26.my.canva.site/anton-lorenzo-portfolio/#automated-booking-system)
 
 ## Tools
-- Python
-  - Selenium (web automation)
-  - Regex
-  - Multiprocessing (parallel execution)
-  - Telegram Bot API (notifications)
+- Python (web automation with Selenium, Regex parsing, and Multithreading)
+- Telegram Bot API (notifications)
 - Docker (containerized environment with Chrome and Chromedriver)
-- Github Actions (CI/CD workflow for scheduled and manual execution)
+- Github Actions (CI/CD workflow for manual execution)
+- Cron-job (scheduled execution of Github workflow)
