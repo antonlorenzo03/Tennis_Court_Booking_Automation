@@ -24,4 +24,4 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run your script
-CMD ["python", "tennis_single_slot_booking.py.py"]
+CMD ["python", "tennis_single_slot_booking.py"]

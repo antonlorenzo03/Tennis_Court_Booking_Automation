@@ -11,7 +11,7 @@ import time
 import os
 import requests
 from selenium.webdriver.chrome.options import Options
-
+import pytz
 
 
 def create_driver():
@@ -131,12 +131,18 @@ def send_telegram_message(message):
 
 
 def wait_until_target():
-    booking_time = "08:01:02"
-    now = datetime.now()
-    booking_time = datetime.strptime(booking_time, "%H:%M:%S").replace(
+    tz = pytz.timezone("Asia/Manila")
+    now = datetime.now(tz)
+
+    booking_time = tz.localize(datetime.strptime("08:01:02", "%H:%M:%S").replace(
         year=now.year, month=now.month, day=now.day
-    )
+    ))
+
+    if booking_time < now:
+        booking_time += timedelta(days=1)
 
     seconds_waiting = (booking_time - now).total_seconds()
+    print(f"Now: {now}, Booking: {booking_time}, Waiting: {seconds_waiting:.0f} seconds")
     if seconds_waiting > 0:
         time.sleep(seconds_waiting)
+

@@ -1,3 +1,4 @@
 selenium
 requests
 python-dotenv
+pytz==2023.3

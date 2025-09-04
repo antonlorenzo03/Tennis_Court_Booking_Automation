@@ -36,7 +36,7 @@ def main(target_day, court_priority, preferred_time, max_retries=30):
             # select court
             select_dropdown(driver, '//label[text()="Appointment"]/following-sibling::div/select',court)
             click_button(driver, '//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
-            time.sleep(2)
+            time.sleep(2.5)
 
             print("Court selected.")
 
