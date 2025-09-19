@@ -126,8 +126,8 @@ def main(target_day, court_priority, preferred_time, max_retries=30):
             click_button(driver,'//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
             handle_popup(driver)
 
-            # Pay on-site page
-            click_button(driver, '//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
+            # # Pay on-site page
+            # click_button(driver, '//button[@class="bookly-next-step bookly-js-next-step bookly-btn ladda-button"]')
 
             print("Validating form submission...")
 

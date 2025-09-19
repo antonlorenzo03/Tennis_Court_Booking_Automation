@@ -134,7 +134,7 @@ def wait_until_target():
     tz = pytz.timezone("Asia/Manila")
     now = datetime.now(tz)
 
-    booking_time = tz.localize(datetime.strptime("08:01:02", "%H:%M:%S").replace(
+    booking_time = tz.localize(datetime.strptime("08:01:00", "%H:%M:%S").replace(
         year=now.year, month=now.month, day=now.day
     ))
 
